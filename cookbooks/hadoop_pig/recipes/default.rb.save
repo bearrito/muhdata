@@ -1,0 +1,108 @@
+#
+# Cookbook Name:: chef-hadoop
+# Recipe:: default
+#
+# Copyright 2013, YOUR_COMPANY_NAME
+#
+# All rights reserved - Do Not Redistribute
+#
+
+user_home = "/home/#{node[:auth][:hduser]}"
+user node[:auth][:hduser] do
+  shell "/bin/bash"
+  home user_home
+  system false
+  action :create
+end
+
+group node[:auth][:hdgroup] do
+  action :create
+  members node[:auth][:hduser]
+  append true
+end
+
+apt_package "openjdk-7-jdk" do 
+	action :install
+end
+
+hadoop_src = "#{node[:hadoop][:mirror]}/#{node[:hadoop][:version]}/#{node[:hadoop][:version]}.tar.gz"
+hadoop_install_dir = "#{node[:hadoop][:install_dir]}"
+hadoop_local_src = "#{hadoop_install_dir}/#{node[:hadoop][:version]}.tar.gz"
+hadoop_local = "#{hadoop_install_dir}/#{node[:hadoop][:version]}"
+
+remote_file hadoop_local_src do
+
+	source  hadoop_src
+	not_if { ::File.exists?(hadoop_local_src)}
+	owner node[:auth][:hduser]
+	group node[:auth][:hdgroup]
+	mode 00770
+end
+
+bash "untar_hadoop" do
+  user "root"
+  cwd node[:hadoop][:install_dir]
+  code <<-EOH
+    tar -xvzf hadoop_local_src
+  EOH
+  action :nothing
+end
+
+directory hadoop_local do
+
+        owner node[:auth][:hduser]
+        group node[:auth][:hdgroup]
+        mode 00770
+end
+
+
+pig_src = "#{node[:pig][:mirror]}/#{node[:pig][:version]}/#{node[:pig][:version]}.tar.gz"
+pig_install_dir = "#{node[:pig][:install_dir]}"
+pig_local_src = "#{pig_install_dir}/#{node[:pig][:version]}.tar.gz"
+pig_local = "#{pig_install_dir}/#{node[:pig][:version]}"
+
+
+remote_file pig_local_src do
+
+        source  pig_src
+        owner node[:auth][:hduser]
+        group node[:auth][:hdgroup]
+        mode 00770
+end
+
+bash "untar_pig" do
+  user "root"
+  cwd node[:pig][:install_dir]
+  code <<-EOH
+    tar -xvzf pig_local_src
+  EOH
+  action :nothing
+end
+
+directory pig_local do
+
+        owner node[:auth][:hduser]
+        group node[:auth][:hdgroup]
+        mode 00770
+end
+
+
+
+bash "create_ssh_for_hduser" do
+
+  user "root"
+  cwd node[:pig][:install_dir]
+  code <<-EOH
+    user "root"
+  cwd node[:pig][:install_dir]
+  code <<-EOH
+    tar -xvzf pig_local_src
+  EOH
+  action :nothing
+end
+
+  EOH
+  action :nothing
+end
+
+
