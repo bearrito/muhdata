@@ -1,0 +1,10 @@
+SITE
+  remote: http://community.opscode.com/api/v1
+  specs:
+    apt (1.9.2)
+    firewall (0.10.2)
+
+DEPENDENCIES
+  apt (>= 0)
+  firewall (>= 0)
+
