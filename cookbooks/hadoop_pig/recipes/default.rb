@@ -161,7 +161,18 @@ end
 hadoop_command = "#{hadoop_sym}/bin/hadoop"
 name_node_format = "#{hadoop_command} namenode -format"
 
+
+execute "setup_bash_rc" do
+   user node[:auth][:hduser]
+   group node[:auth][:hdgroup]
+   cwd user_home
+   command "echo 'export HADOOP_HOME=#{hadoop_sym}' >> .bashrc && echo 'export JAVA_HOME=#{node[:hadoop][:java_home]}' >> .bashrc && echo 'export PATH=$PATH:$HADOOP_HOME/bin' >> .bashrc"
+   action :run
+end
+
 execute "format_the_namenode" do
+   user node[:auth][:hduser]
+   group node[:auth][:hdgroup]
    command name_node_format
    action :run
 end
