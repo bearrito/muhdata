@@ -1,0 +1,8 @@
+$ $HADOOP_HOME/bin/hadoop fs -mkdir       /tmp
+  $ $HADOOP_HOME/bin/hadoop fs -mkdir       /user/hive/warehouse
+  $ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /tmp
+  $ $HADOOP_HOME/bin/hadoop fs -chmod g+w   /user/hive/warehouse
+
+mysql -u hduser -D hivemetastoredb -h localhost  < /opt/hive/scripts/metastore/upgrade/mysql/hive-schema-0.10.0.mysql.sql
+
+share/hcatalog/scripts/hcat_server_install.sh -r /opt/hcatalog -d /usr/share/java -h /opt/hadoop -p 3233
