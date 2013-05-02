@@ -1,4 +1,4 @@
-name             'hadoop_pig'
+name             'apache_bigdata'
 maintainer       'YOUR_COMPANY_NAME'
 maintainer_email 'YOUR_EMAIL'
 license          'All rights reserved'
