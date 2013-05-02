@@ -1,9 +1,9 @@
-muhgraphite Cookbook
+apache_bigdata Cookbook
 ====================
 TODO: Enter the cookbook description here.
 
 e.g.
-This cookbook makes your favorite breakfast sandwhich.
+This cookbook sets up most of the Apache bigdata pieces.
 
 Requirements
 ------------
@@ -11,14 +11,18 @@ TODO: List your cookbook requirements. Be sure to include any requirements this 
 
 e.g.
 #### packages
-- `toaster` - muhgraphite needs toaster to brown your bagel.
+
+- 'firewall'
+- 'apt'
+- 'mysql'
+- 'database'
 
 Attributes
 ----------
 TODO: List you cookbook attributes here.
 
 e.g.
-#### muhgraphite::default
+#### apache_bigdata::default
 <table>
   <tr>
     <th>Key</th>
@@ -36,7 +40,7 @@ e.g.
 
 Usage
 -----
-#### muhgraphite::default
+#### apache_big::default
 TODO: Write usage instructions for each cookbook.
 
 e.g.
@@ -46,7 +50,7 @@ Just include `muhgraphite` in your node's `run_list`:
 {
   "name":"my_node",
   "run_list": [
-    "recipe[muhgraphite]"
+    "recipe[apache_bigdata]"
   ]
 }
 ```
