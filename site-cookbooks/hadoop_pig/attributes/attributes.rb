@@ -22,7 +22,10 @@ default[:hcat][:debs]		= ["ant","maven"]
 default[:hcat][:home] 		= "/opt"
 
 default[:hive][:mirror]		= "http://mirror.cc.columbia.edu/pub/software/apache/hive/"
-default[:hive][:version]	= "hive-0.10.0"
+default[:hive][:version_number] =  "0.10.0"
+
+default[:hive][:version]	= "hive-#{hive[:version_number]}"
+default[:hive][:schema_version]	= "hive-schema-#{hive[:version_number]}"
 default[:hive][:db_password]	= "default3023i"
 default[:hive][:db_user]	= "hduser"
 default[:hive][:db]		= "hivemetastoredb"

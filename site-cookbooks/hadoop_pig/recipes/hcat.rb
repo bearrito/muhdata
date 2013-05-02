@@ -7,6 +7,7 @@ remote_hcat_source 		= "#{node[:hcat][:mirror]}/hcatalog-#{node[:hcat][:version]
 tmp_hcat_source_compressed 	= "#{tmp_staging}/hcatalog-src-#{node[:hcat][:version]}-incubating.tar.gz"
 tmp_hcat_source			= "#{tmp_staging}/hcatalog-src-#{node[:hcat][:version]}-incubating"
 hcatalog_version  		= "hcatalog-#{node[:hcat][:version]}-incubating"
+hcatalog_src_version  		= "hcatalog-src-#{node[:hcat][:version]}-incubating"
 
 local_hcat			= "#{node[:hcat][:home]}/#{node[:hcat][:version]}"
 user_home 			= "/home/#{node[:auth][:hduser]}"
@@ -33,6 +34,11 @@ execute "untar hcat" do
     command "tar xvzf #{tmp_hcat_source_compressed}"
 end
 
+execute "chown_staging" do
+    cwd "/tmp"
+    command "chown -R #{node[:auth][:hduser]}:#{node[:auth][:hdgroup]} #{tmp_staging}" 
+end
+
 execute "chown hcat" do
     command "chown -R #{node[:auth][:hduser]}:#{node[:auth][:hdgroup]} #{tmp_hcat_source}" 
 end
@@ -53,7 +59,7 @@ execute "build tarball as hduser" do
    environment 'JAVA_HOME' => node[:hadoop][:java_home]
    user node[:auth][:hduser]
    cwd "#{tmp_hcat_source}"
-   command "ant package"
-   creates "/tmp/staging/#{hcatalog_version}/build/#{hcatalog_version}.tar.gz"
+   command "ant package && touch /tmp/staging/nobuild"
+   creates "/tmp/staging/nobuild"
 end
 
