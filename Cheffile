@@ -8,4 +8,5 @@ site 'http://community.opscode.com/api/v1'
   cookbook 'apt'	
   cookbook 'mysql'
   cookbook 'database'
+  cookbook 'java'
 
