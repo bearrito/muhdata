@@ -479,6 +479,7 @@
     If the user has set hive.merge.mapfiles to true and hive.merge.mapredfiles to false, the idea was the
     number of reducers are few, so the number of files anyway are small. However, with this optimization,
     we are increasing the number of files possibly by a big margin. So, we merge aggresively.
+  </description>
 </property>
 
 <property>
@@ -552,10 +553,10 @@
     to know how to construct the canonical path. It just gives user choice if they want to change 
     the default directory name.
     For example, there are 2 skewed column c1 and c2. 2 skewed value: (1,a) and (2,b). subdirectory:
-    <partition-dir>/c1=1/c2=a/
-    <partition-dir>/c1=2/c2=b/
+    <partition-dir>/c1=1/c2=a/</partition-dir>
+    <partition-dir>/c1=2/c2=b/</partition-dir>
     <partition-dir>/HIVE_DEFAULT_LIST_BUCKETING_DIR_NAME/HIVE_DEFAULT_LIST_BUCKETING_DIR_NAME/
-    Note: This config won't impact users if they don't list bucketing.
+    Note: This config won't impact users if they don't list bucketing.</partition-dir>
 </description>
 </property>
 

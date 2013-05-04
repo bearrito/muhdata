@@ -22,8 +22,17 @@ group node[:auth][:hdgroup] do
   append true
 end
 
-apt_package "openjdk-7-jdk" do 
-	action :install
+
+
+execute "update_apt" do
+    command "apt-get update"
+end
+
+
+node[:hadoop][:debs].each do |deb|
+   package deb do
+     action :install
+   end
 end
 
 hadoop_src = "#{node[:hadoop][:mirror]}/#{node[:hadoop][:version]}/#{node[:hadoop][:version]}.tar.gz"

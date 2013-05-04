@@ -1,10 +1,15 @@
 
+default[:auth][:hduser]      	= "hduser"
+default[:auth][:hdgroup]      	= "hadoop"
+
+
 default[:hadoop][:mirror]	= "http://apache.petsads.us/hadoop/core"
 default[:hadoop][:version]      = "hadoop-1.1.2"
 default[:hadoop][:install_dir]	= "/opt"
 default[:hadoop][:temp_dir]     = "/var/hadoop/tmp"
 default[:hadoop][:configs] 	= ["hadoop-env.sh","core-site.xml","mapred-site.xml","hdfs-site.xml"]
-default[:hadoop][:java_home]         = "/usr/lib/jvm/java-7-openjdk-amd64"
+default[:hadoop][:java_home]	= "/usr/lib/jvm/jdk1.7.0_17"
+default[:hadoop][:debs]		= ["python-software-properties"]
 
 # one of: debug, verbose, notice, warning
 default[:pig][:install_dir]  	= "/opt"
@@ -20,9 +25,10 @@ default[:hcat][:mirror] 	= "http://apache.tradebit.com/pub/incubator/hcatalog"
 default[:hcat][:version] 	= "0.5.0"
 default[:hcat][:debs]		= ["ant","maven"]
 default[:hcat][:home] 		= "/opt"
+default[:hcat][:staging]        = "/home/#{auth[:hduser]}/staging"
 
 default[:hive][:mirror]		= "http://mirror.cc.columbia.edu/pub/software/apache/hive/"
-default[:hive][:version_number] =  "0.10.0"
+default[:hive][:version_number] = "0.10.0"
 
 default[:hive][:version]	= "hive-#{hive[:version_number]}"
 default[:hive][:schema_version]	= "hive-schema-#{hive[:version_number]}"
@@ -35,7 +41,5 @@ default[:hive][:root]		= "/opt"
 default[:hive][:thrift][:server]	= "localhost"
 default[:hive][:thrift][:port]		= 3233
 
-default[:auth][:hduser]      	= "hduser"
-default[:auth][:hdgroup]      	= "hadoop"
 
 default[:java][:home] 		= "foo"

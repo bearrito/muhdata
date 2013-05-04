@@ -6,12 +6,7 @@ hive_schema_version 		=  node[:hive][:schema_version]
 
 user_home 			= "/home/#{node[:auth][:hduser]}"
 
-hcatalog_version  		= "hcatalog-#{node[:hcat][:version]}-incubating"
-hcatalog_src_version  		= "hcatalog-src-#{node[:hcat][:version]}-incubating"
 
-temp_hcatalog_home_version	= "/tmp/hcat-staging/#{hcatalog_version}"	
-hcatalog_home_version		= "/opt/#{hcatalog_version}"
-hcatalog_home			= "/opt/hcatalog"
 
 
 node[:hive][:debs].each do |deb|
@@ -100,7 +95,7 @@ execute "init_the_hive_db" do
      user node[:hive][:db_user]
      group node[:auth][:hdgroup]
      command hive_db_init
-     creates  "#{hcatalog_home}/chef-init-hive-db"
+     creates  "#{hive_home}/chef-init-hive-db"
 end
 
 
@@ -112,72 +107,12 @@ execute "setup_bash_rc_for_hive" do
    action :run
 end
 
-directory hcatalog_version do 
-    action :create
-    owner node[:auth][:hduser]
-    group node[:auth][:hdgroup]
-end
-
-directory temp_hcatalog_home_version do 
-    action :create
-    owner node[:auth][:hduser]
-    group node[:auth][:hdgroup]
-    recursive true
-end
 
 
-
-execute "copy_hcatalog" do
+template "#{hive_home}/conf/hive-site.xml" do
+   source "hive-default.xml.template.erb"
    user node[:auth][:hduser]
    group node[:auth][:hdgroup]
-   cwd user_home
-   command  "cp /tmp/staging/#{hcatalog_src_version }/build/#{hcatalog_version}.tar.gz  #{temp_hcatalog_home_version}"
-   
-end
-
-execute "untar_hcatalog" do
-   user node[:auth][:hduser]
-   group node[:auth][:hdgroup]
-   cwd user_home
-   command  "tar xvzf #{temp_hcatalog_home_version}/#{hcatalog_version}.tar.gz -C #{temp_hcatalog_home_version}"
-   
-end
-
-
-
-
-directory hcatalog_home do 
-    action :create
-    owner node[:auth][:hduser]
-    group node[:auth][:hdgroup]
-    recursive true
-end
-
-
-execute "chmod_install_script" do
-   user node[:auth][:hduser]
-   group node[:auth][:hdgroup]
-   cwd  "#{temp_hcatalog_home_version}/#{hcatalog_version}"
-   command "chmod 740 share/hcatalog/scripts/hcat_server_install.sh"
-end
-
-
-execute "run_hcatalog_setup_script" do
-   user node[:auth][:hduser]
-   group node[:auth][:hdgroup]
-   cwd  "#{temp_hcatalog_home_version}/#{hcatalog_version}"
-   command "share/hcatalog/scripts/hcat_server_install.sh -r #{hcatalog_home} -d /usr/share/java -h #{node[:hadoop][:install_dir]}/hadoop -p #{node[:hive][:thrift][:port]}"
-   creates  "#{hcatalog_home}/chef-init-hcatalog-install"
-end
-
-
-
-execute "chown_hcatalog" do
-   user node[:auth][:hduser]
-   group node[:auth][:hdgroup]
-   cwd user_home
-   command  "chown -R #{node[:auth][:hduser]}:#{node[:auth][:hdgroup]}  #{hcatalog_home}"
-   creates  #{temp_hcatalog_home_version}
 end
 
 
